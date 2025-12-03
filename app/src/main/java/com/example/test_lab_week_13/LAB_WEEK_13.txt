@@ -1,0 +1,92 @@
+Berikut versi bahasa Indonesia yang lebih rapi, jelas, dan tanpa frasa “in Part …”.
+
+---
+
+1. Mengapa MVVM itu penting? File mana yang termasuk Model, View, dan ViewModel?**
+
+MVVM (Model–View–ViewModel) penting karena memisahkan tampilan (View) dari data dan logika bisnis (Model) dengan perantara ViewModel. Pemisahan ini membuat kode:
+
+* lebih mudah dirawat,
+* lebih mudah diuji,
+* lebih “reaktif” karena UI otomatis berubah saat data berubah.
+
+**Model (Data & Logika):**
+
+* `Movie.kt`
+* `PopularMoviesResponse.kt`
+* `MovieDao.kt`
+* `MovieDatabase.kt`
+* `MovieRepository.kt`
+* `MovieService.kt`
+
+**View (Tampilan UI):**
+
+* `MainActivity.kt`
+* `DetailsActivity.kt`
+* `MovieAdapter.kt`
+* `activity_main.xml`
+* `activity_details.xml`
+* `view_movie_item.xml`
+
+**ViewModel (Penampung State):**
+
+* `MovieViewModel.kt`
+
+---
+
+### **2. Mengapa Data Binding lebih efisien dibandingkan metode biasa?**
+
+Data Binding lebih efisien karena:
+
+* Menghilangkan kebutuhan pemanggilan `findViewById` berulang–ulang.
+* Mengurangi boilerplate code dan risiko NullPointerException.
+* XML dapat langsung mengikat variabel dari ViewModel.
+* UI otomatis ter-update saat data berubah tanpa harus “dipush” manual dari Activity.
+
+Ini membuat alur kode lebih bersih, reaktif, dan mudah dirawat.
+
+---
+
+3. Mengapa Singleton Pattern itu penting?
+
+Singleton memastikan hanya **satu instance database** yang dibuat selama aplikasi berjalan. Ini penting karena:
+
+* Membuat database itu mahal secara resource.
+* Banyak instance bisa menyebabkan penurunan performa.
+* Dapat menimbulkan **Race Condition** (dua thread membaca/menulis bersamaan) yang bisa merusak data.
+
+Dengan Singleton, aplikasi lebih aman dan hemat resource.
+
+
+
+4. Mengapa Repository Pattern itu penting?**
+
+Repository berfungsi sebagai **“single source of truth”**, artinya:
+
+* ViewModel tidak perlu tahu sumber data berasal dari API atau database lokal.
+* Repository yang menangani logika pengambilan data, termasuk caching.
+* Jika database kosong → ambil dari API.
+* Jika sudah ada data → ambil dari DB untuk akses cepat dan offline.
+
+Ini membuat arsitektur modular, bersih, dan mudah diuji.
+
+---
+
+5. Selain WorkManager, apa cara lain untuk menyegarkan database dengan data terbaru?**
+
+Ada beberapa alternatif lain:
+
+1. AlarmManager
+   Mengatur jadwal update, tapi kurang efisien dibanding WorkManager.
+
+2. Foreground Service
+   Cocok jika update harus segera dan pengguna harus diberi tahu (ada notifikasi).
+
+3. Firebase Cloud Messaging (FCM)
+   Server bisa mengirim *silent push* ketika data baru tersedia sehingga aplikasi hanya update saat diperlukan.
+
+4. LifecycleScope / Handler / Timer
+   Bisa dipakai untuk update berkala ketika aplikasi aktif, tetapi berhenti ketika aplikasi ditutup.
+
+
+
